@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useAuthContext } from "./hooks/useAuthContext";
+
 // pages and component
 
 import Home from "./pages/Home";
@@ -31,19 +32,14 @@ function App() {
               path="/signup"
               element={!user ? <Signup /> : <Navigate to="/" />}
             />
-            {/* <Route
-              path="/dashboard"
-              element={user ? <Dashboard /> : <Navigate to="/login"></Navigate>}
-            /> */}
 
-            <Route path="/dashboard" element={<Home />}></Route>
-            <Route path="/dashboard/employee" element={<Employee />}></Route>
-            <Route path="/dashboard/category" element={<Category />}></Route>
-            <Route path="/dashboard/profile" element={<Profile />}></Route>
-            <Route
-              path="/dashboard/add_category"
-              element={<AddCategory />}
-            ></Route>
+            <Route path="/dashboard" element={<Dashboard />}>
+              <Route path="" element={<Home />} />
+              <Route path="employee" element={<Employee />} />
+              <Route path="category" element={<Category />} />
+              <Route path="profile" element={<Profile />} />
+              <Route path="add_category" element={<AddCategory />} />
+            </Route>
           </Routes>
         </div>
       </BrowserRouter>

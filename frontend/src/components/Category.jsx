@@ -4,12 +4,15 @@ import { Link } from "react-router-dom";
 const Category = () => {
   return (
     <div>
-      <div className="d-flex justify-content-center">
+      <div className=" m-4 d-flex justify-content-center">
         <h3>Category List</h3>
       </div>
-      <Link to="/dashboard/add_category" className="btn btn-success">
-        Add Catagory
-      </Link>
+      {/* styling the add categoty  */}
+      <div className="m-5 d-flex justify-content-center">
+        <Link to="/dashboard/add_category" className=" btn btn-success">
+          Add Catagory
+        </Link>
+      </div>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, Outlet } from "react-router-dom";
-import "bootstrap-icons/font/bootstrap-icons.css";
+
 // import axios from "axios";
 import { useLogout } from "../hooks/useLogout";
 const Dashboard = () => {
@@ -65,7 +65,10 @@ const Dashboard = () => {
                 </Link>
               </li>
               <li className="w-100" onClick={handleLogout}>
-                <Link className="nav-link px-0 align-middle text-white">
+                <Link
+                  to="/login"
+                  className="nav-link px-0 align-middle text-white"
+                >
                   <i className="fs-4 bi-power ms-2"></i>
                   <span className="ms-2 d-none d-sm-inline">Logout</span>
                 </Link>
