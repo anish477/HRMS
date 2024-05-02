@@ -7,22 +7,14 @@ const AddCategory = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent default form submission
-
+    e.preventDefault();
     try {
-      // Make an API request to save the new category
-      const response = await axios.post("/api/categories", { name: category });
-
-      // Check the response status code
-      if (response.status === 201) {
-        console.log("Category added:", response.data);
-        // Optionally navigate to another page
-        navigate("/categories");
-      } else {
-        console.error("Failed to add category");
-      }
-    } catch (err) {
-      console.error("Error adding category:", err);
+      await axios.post("http://localhost:5000/api/categories", {
+        name: category,
+      });
+      navigate("/categories");
+    } catch (error) {
+      console.error(error);
     }
   };
 
