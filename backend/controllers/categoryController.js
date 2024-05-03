@@ -1,6 +1,6 @@
 // Controller for category related operations
 
-const Category = require("../models/Category");
+const Category = require("../models/categoryModel");
 const mongoose = require("mongoose");
 
 // get all categories

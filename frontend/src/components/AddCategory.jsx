@@ -1,20 +1,34 @@
-import axios from "axios";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useCategoryContext } from "../hooks/useCategoryContext";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const AddCategory = () => {
-  const [category, setCategory] = useState("");
-  const navigate = useNavigate();
+  // const { dispatch } = useCategoryContext();
+  const { user } = useAuthContext(); // Assuming useAuthContext provides access to auth context
+
+  const [name, setCategory] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      await axios.post("http://localhost:5000/api/categories", {
-        name: category,
-      });
-      navigate("/categories");
-    } catch (error) {
-      console.error(error);
+
+    const category = { name };
+
+    const response = await fetch("/api/category", {
+      method: "POST",
+      body: JSON.stringify(category),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+    });
+    const json = await response.json();
+    if (response.ok) {
+      setCategory("");
+      setError(null);
+      console.log("new workout added", json);
+    } else {
+      setError(json.error);
     }
   };
 
@@ -32,16 +46,19 @@ const AddCategory = () => {
               name="category"
               id="category"
               placeholder="Enter Category"
-              value={category}
+              value={name}
               onChange={(e) => setCategory(e.target.value)}
-              className="form-control rounded-0"
               required // Make the input field required
             />
           </div>
-          <button className="btn btn-success w-100 rounded-0 mb-2">
+          <button
+            type="submit"
+            className="btn btn-success w-100 rounded-0 mb-2"
+          >
             Add Category
           </button>
         </form>
+        {error && <div className="alert alert-danger mt-3">{error}</div>}
       </div>
     </div>
   );
