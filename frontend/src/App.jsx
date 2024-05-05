@@ -12,6 +12,7 @@ import Employee from "./components/Employee";
 import Category from "./components/Category";
 import Profile from "./components/Profile";
 import AddCategory from "./components/AddCategory";
+import AddEmployee from "./components/AddEmployee";
 function App() {
   const { user } = useAuthContext();
   return (
@@ -39,6 +40,7 @@ function App() {
               <Route path="category" element={<Category />} />
               <Route path="profile" element={<Profile />} />
               <Route path="add_category" element={<AddCategory />} />
+              <Route path="add_employee" element={<AddEmployee />} />
             </Route>
           </Routes>
         </div>
