@@ -1,20 +1,32 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-
-// import { useCategoryContext } from "../hooks/useCategoryContext";
 import { useAuthContext } from "../hooks/useAuthContext";
 
 const CategoryDetails = () => {
-  // const { dispatch } = useCategoryContext();
   const { user } = useAuthContext();
-  // fetching data from /api/category/:id
   const [categories, setCategory] = useState(null);
-  // with use of useAuthContext, we can get the user object from the context
+
+  const handleClick = async (categoryId) => {
+    if (!user) {
+      return;
+    }
+
+    const response = await fetch("/api/category/" + categoryId, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    });
+
+    if (response.ok) {
+      setCategory(categories.filter((category) => category._id !== categoryId));
+    }
+  };
+
   useEffect(() => {
     const fetchCategory = async () => {
       if (user) {
-        // Check if user is not null
         try {
           const response = await fetch("/api/category", {
             method: "GET",
@@ -35,28 +47,35 @@ const CategoryDetails = () => {
 
   return (
     <div>
-      <div className="d-flex justify-content-center border-bottom p-2">
-        {/* add virtical height  */}
-        <div className="">
-          <h4>Category List</h4>
-        </div>
+      <div className="px-5 mt-3 d-flex justify-content-center">
+        <h4>Category List</h4>
       </div>
-      <div className="d-flex justify-content-center">
-        {/* displayion fetched data in paragrah tag */}
-        {categories && (
-          <div className="border-r-2 rounded">
-            {Array.from(
-              new Set(categories.map((category) => category.name))
-            ).map((name) => (
-              <h5 key={name}>{name}</h5>
-            ))}
-          </div>
-        )}
-
+      <div className="px-5 mt-1">
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            {categories &&
+              categories.map((category) => (
+                <tr key={category._id}>
+                  <td>{category.name}</td>
+                  <td
+                    className="material-symbols-outlined"
+                    onClick={() => handleClick(category._id)}
+                  >
+                    Delete
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
         {categories && categories.length === 0 && <p>No categories found</p>}
       </div>
-      <div className="m-5 d-flex justify-content-center">
-        <Link to="/dashboard/add_category" className=" btn btn-success">
+      <div className="d-flex justify-content-center">
+        <Link to="/dashboard/add_category" className="btn btn-success">
           Add Category
         </Link>
       </div>

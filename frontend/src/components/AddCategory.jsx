@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-// import { useCategoryContext } from "../hooks/useCategoryContext";
+
 import { useAuthContext } from "../hooks/useAuthContext";
 
 const AddCategory = () => {
-  // const { dispatch } = useCategoryContext();
-  const { user } = useAuthContext(); // Assuming useAuthContext provides access to auth context
+  const { user } = useAuthContext();
 
   const [name, setCategory] = useState("");
   const [error, setError] = useState("");
