@@ -1,7 +1,7 @@
 // src/components/TrainingDevelopmentPage.js
 import React, { useState } from 'react';
-import Logo from './Logo';
-import '../App.css';
+// import Logo from './Logo';
+// import '../App.css';
 
 const TrainingDevelopmentPage = () => {
   const [courses] = useState([
@@ -35,7 +35,7 @@ const TrainingDevelopmentPage = () => {
     <div className="training-development-container">
       <header className="header">
         <div className="logo-container">
-          <Logo />
+          {/* <Logo /> */}
           <h1>Training and Development</h1>
         </div>
       </header>
