@@ -13,6 +13,7 @@ import Category from "./components/Category";
 import Profile from "./components/Profile";
 import AddCategory from "./components/AddCategory";
 import AddEmployee from "./components/AddEmployee";
+import TrainingDevelopmentPage from './components/TrainingDevelopmentPage';
 function App() {
   const { user } = useAuthContext();
   return (
