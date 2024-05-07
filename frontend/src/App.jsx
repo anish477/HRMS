@@ -12,8 +12,7 @@ import Category from "./components/Category";
 import Profile from "./components/Profile";
 import AddCategory from "./components/AddCategory";
 import AddEmployee from "./components/AddEmployee";
-import EditEmployee from "./components/EditEmployee";
-import InfoHome from "./components/Info_Home";
+
 
 function App() {
   const { user } = useAuthContext();
