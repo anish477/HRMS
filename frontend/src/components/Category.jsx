@@ -50,11 +50,12 @@ const CategoryDetails = () => {
       <div className="px-5 mt-3 d-flex justify-content-center">
         <h4>Category List</h4>
       </div>
-      <div className="px-5 mt-1">
+      <div className=" px-5 d-flex justify-content-center">
         <table className="table">
           <thead>
             <tr>
-              <th>Name</th>
+              <th className="col-8">Name</th>
+              <th className="col-4">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -62,11 +63,13 @@ const CategoryDetails = () => {
               categories.map((category) => (
                 <tr key={category._id}>
                   <td>{category.name}</td>
-                  <td
-                    className="material-symbols-outlined"
-                    onClick={() => handleClick(category._id)}
-                  >
-                    Delete
+                  <td>
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => handleClick(category._id)}
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))}

@@ -149,19 +149,22 @@ const AddEmployee = () => {
               name="category_id"
               id="category"
               className="form-select"
+              value={category} // Add this line to control the select element with the category state
               onChange={(e) => setCategory(e.target.value)}
             >
+              <option value="">Select a category</option>{" "}
+              {/* Add this line to set the initial value to null */}
               {categories &&
                 categories.map((category) => {
                   return (
-                    <option key={category.id} value={category.id}>
+                    <option key={category._id} value={category.id}>
                       {category.name}
                     </option>
                   );
                 })}
             </select>
           </div>
-          <div className="col-12 mb-3">
+          {/* <div className="col-12 mb-3">
             <label className="form-label" htmlFor="inputGroupFile01">
               Select Image
             </label>
@@ -179,7 +182,7 @@ const AddEmployee = () => {
                 reader.readAsDataURL(file);
               }}
             />
-          </div>
+          </div> */}
           <div className="col-12">
             <button type="submit" className="btn btn-primary w-100">
               Add Employee
