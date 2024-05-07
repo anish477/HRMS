@@ -55,10 +55,13 @@ const Employee = () => {
           <table className="table">
             <thead>
               <tr>
-                <th> Image</th>
                 <th>Name</th>
 
                 <th>Email</th>
+                <th> Salary</th>
+                <th>Address</th>
+
+                <th>Category</th>
 
                 <th>Actions</th>
               </tr>
@@ -68,10 +71,12 @@ const Employee = () => {
               {employees &&
                 employees.map((employee) => (
                   <tr key={employee._id}>
-                    <td>{employee.image}</td>
                     <td>{employee.name}</td>
 
                     <td>{employee.email}</td>
+                    <td>$ {employee.salary}</td>
+                    <td>{employee.address}</td>
+                    <td>{employee.category}</td>
 
                     <td>
                       <Link

@@ -2,6 +2,7 @@
 
 const Employee = require("../models/employeeModel");
 const mongoose = require("mongoose");
+const Admin = require("../models/userModel");
 
 // get all employees
 const getEmployees = async (req, res) => {
@@ -54,9 +55,9 @@ const createEmployee = async (req, res) => {
   if (!category) {
     emptyFields.push("category");
   }
-  if (!image) {
-    emptyFields.push("image");
-  }
+  // if (!image) {
+  //   emptyFields.push("image");
+  // }
   if (emptyFields.length > 0) {
     return res
       .status(400)
@@ -116,15 +117,7 @@ const updateEmployee = async (req, res) => {
     return res.status(404).json({ error: "No such employee" });
   }
 
-  if (
-    !name ||
-    !email ||
-    !password ||
-    !salary ||
-    !address ||
-    !category ||
-    !image
-  ) {
+  if (!name || !email || !password || !salary || !address || !category) {
     return res.status(400).json({ error: "Please fill in all fields" });
   }
 
@@ -136,12 +129,35 @@ const updateEmployee = async (req, res) => {
       salary,
       address,
       category,
-      image,
+      // image,
     });
     res.status(200).json({ message: "Employee updated successfully" });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
+};
+
+const getEmployeeCount = async (req, res) => {
+  try {
+    const user_id = req.user._id;
+    const count = await Employee.countDocuments({ user_id });
+    res.status(200).json(count);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+// Define the getTotalSalary function
+const getTotalSalary = async (req, res) => {
+  const user_id = req.user._id;
+
+  const employees = await Employee.find({ user_id });
+
+  const totalSalary = employees.reduce((acc, employee) => {
+    return acc + parseInt(employee.salary);
+  }, 0);
+
+  res.status(200).json(totalSalary);
 };
 
 module.exports = {
@@ -150,4 +166,6 @@ module.exports = {
   createEmployee,
   deleteEmployee,
   updateEmployee,
+  getEmployeeCount,
+  getTotalSalary,
 };

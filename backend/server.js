@@ -7,6 +7,7 @@ const userRoutes = require("./routes/user");
 const categotyRoutes = require("./routes/category");
 const cors = require("cors");
 const employeeRoutes = require("./routes/employee");
+const router = express.Router();
 
 // express app
 const app = express();
@@ -25,6 +26,7 @@ app.use("/api/workouts", workoutRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/category", categotyRoutes);
 app.use("/api/employee", employeeRoutes);
+
 // connect to db
 mongoose
   .connect(process.env.MONGO_URI)
