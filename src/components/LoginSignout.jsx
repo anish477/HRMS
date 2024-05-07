@@ -15,36 +15,28 @@ export const LoginSignout = () => {
   let gapiInited = false, gisInited = false, tokenClient;
 
   useEffect(() => {
-    const loadDependencies = () => {
-        gapiLoaded();
-        gisLoaded();
-    };
-    loadDependencies();
-}, [gapiLoaded, gisLoaded]);
-
-
+    //const expiryTime = new Date().getTime() + expiresIn * 1000;
+    gapiLoaded()
+    gisLoaded()
+  }, [])
 
   function gapiLoaded() {
     gapi.load('client', initializeGapiClient);
   }
 
   async function initializeGapiClient() {
-    try {
-      await gapi.client.init({
-        apiKey: API_KEY,
-        discoveryDocs: [DISCOVERY_DOC],
-      });
-      gapiInited = true;
+    await gapi.client.init({
+      apiKey: API_KEY,
+      discoveryDocs: [DISCOVERY_DOC],
+    });
+    gapiInited = true;
 
-      if (accessToken && expiresIn) {
-        gapi.client.setToken({
-          access_token: accessToken,
-          expires_in: expiresIn,
-        });
-        listUpcomingEvents();
-      }
-    } catch (err) {
-      console.error('Error initializing GAPI client:', err);
+    if (accessToken && expiresIn) {
+      gapi.client.setToken({
+        access_token: accessToken,
+        expires_in: expiresIn,
+      });
+      listUpcomingEvents();
     }
   }
 
@@ -58,12 +50,38 @@ export const LoginSignout = () => {
     gisInited = true;
   }
 
+  //Enables user interaction after all libraries are loaded.
+
   function handleAuthClick() {
-    // Implementation remains the same
+    tokenClient.callback = async (resp) => {
+      if (resp.error) {
+        throw (resp);
+      }
+      await listUpcomingEvents();
+      const { access_token, expires_in } = gapi.client.getToken();
+      localStorage.setItem('access_token', access_token);
+      localStorage.setItem('expires_in', expires_in)
+    };
+
+    if (!(accessToken && expiresIn)) {
+      // Prompt the user to select a Google Account and ask for consent to share their data
+      // when establishing a new session.
+      tokenClient.requestAccessToken({ prompt: 'consent' });
+    } else {
+      // Skip display of account chooser and consent dialog for an existing session.
+      tokenClient.requestAccessToken({ prompt: '' });
+    }
   }
 
+  //Sign out the user upon button click.
+
   function handleSignoutClick() {
-    // Implementation remains the same
+    const token = gapi.client.getToken();
+    if (token !== null) {
+      google.accounts.oauth2.revoke(token.access_token);
+      gapi.client.setToken('');
+      localStorage.clear();
+    }
   }
 
   async function listUpcomingEvents() {
@@ -79,15 +97,7 @@ export const LoginSignout = () => {
       };
       response = await gapi.client.calendar.events.list(request);
     } catch (err) {
-      if (err.result && err.result.error && err.result.error.message) {
-        if (err.result.error.message === 'The specified time range is empty.') {
-          console.error('Error: The specified time range is empty.');
-        } else {
-          console.error('Error:', err.result.error.message);
-        }
-      } else {
-        console.error('Error:', err);
-      }
+      document.getElementById('content').innerText = err.message;
       return;
     }
 
@@ -96,15 +106,46 @@ export const LoginSignout = () => {
       document.getElementById('content').innerText = 'No events found.';
       return;
     }
+    // Flatten to string to display
     const output = events.reduce(
       (str, event) => `${str}${event.summary} (${event.start.dateTime || event.start.date})\n`,'Events:\n');
     document.getElementById('content').innerText = output;
   }
   
   function addManualEvent(){
-    // Implementation remains the same
-  }
+    var event = {
+      'kind': 'calendar#event',
+      'summary': 'Event 2',
+      'location': 'Masai School, Bangalore',
+      'description': 'Paty time',
+      'start': {
+        'dateTime': '2023-03-18T01:05:00.000Z',
+        'timeZone': 'UTC'
+      },
+      'end': {
+        'dateTime': '2023-03-18T01:35:00.000Z',
+        'timeZone': 'UTC'
+      },
+      'recurrence': [
+        'RRULE:FREQ=DAILY;COUNT=1'
+      ],
+      'attendees': [
+        {'email': 'techmovieadd@gmail.com','responseStatus':'needsAction'},
+      ],
+      'reminders': {
+        'useDefault': true,
+      },
+      "guestsCanSeeOtherGuests": true,
+    }
 
+      var request = gapi.client.calendar.events.insert({'calendarId': 'primary','resource': event,'sendUpdates': 'all'});
+      request.execute((event)=>{
+          console.log(event)
+          window.open(event.htmlLink)
+      },(error)=>{
+        console.error(error);
+      });
+  }
   return (
     <div>
       <button id="authorize_button" hidden={accessToken && expiresIn} onClick={handleAuthClick}>Authorize</button>
