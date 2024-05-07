@@ -154,4 +154,4 @@ export const LoginSignout = () => {
       <pre id="content" style={{ whiteSpace: 'pre-wrap' }}></pre>
     </div>
   )
-}
+}//This file has the authentication process
