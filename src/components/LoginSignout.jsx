@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react'
+import googleLogo from './google-logo.jpeg';
+
 
 export const LoginSignout = () => {
   const gapi = window.gapi;
@@ -115,22 +117,22 @@ export const LoginSignout = () => {
   function addManualEvent(){
     var event = {
       'kind': 'calendar#event',
-      'summary': 'Event 2',
-      'location': 'Masai School, Bangalore',
-      'description': 'Paty time',
+      'summary': 'Event 1',
+      'location': 'Herald College, Kathmandu',
+      'description': 'I am just checking this time.',
       'start': {
-        'dateTime': '2023-03-18T01:05:00.000Z',
+        'dateTime': '2024-05-08T16:55:00.000Z',
         'timeZone': 'UTC'
       },
       'end': {
-        'dateTime': '2023-03-18T01:35:00.000Z',
+        'dateTime': '2024-05-08T17:15:00.000Z',
         'timeZone': 'UTC'
       },
       'recurrence': [
         'RRULE:FREQ=DAILY;COUNT=1'
       ],
       'attendees': [
-        {'email': 'techmovieadd@gmail.com','responseStatus':'needsAction'},
+        {'email': 'tarawebber29@gmail.com','responseStatus':'needsAction'},
       ],
       'reminders': {
         'useDefault': true,
@@ -147,11 +149,17 @@ export const LoginSignout = () => {
       });
   }
   return (
-    <div>
-      <button id="authorize_button" hidden={accessToken && expiresIn} onClick={handleAuthClick}>Authorize</button>
-      <button id="signout_button" hidden={!accessToken && !expiresIn}   onClick={handleSignoutClick}>Sign Out</button>
-      <button id='add_manual_event' hidden={!accessToken && !expiresIn} onClick={addManualEvent}>Add Event</button>
-      <pre id="content" style={{ whiteSpace: 'pre-wrap' }}></pre>
+    <div style={{ position: 'relative', height: '100vh' }}>
+      <img src={googleLogo} alt="Google Logo" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+      
+      <div style={{ position: 'fixed', top: '40%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 1 }}>
+        <button id="authorize_button" hidden={accessToken && expiresIn} onClick={handleAuthClick} style={{ marginRight: '10px', marginBottom: '20px', padding: '10px 20px', fontSize: '16px',backgroundColor: 'black',
+    color: 'white'}}>Authorize</button>
+        <button id="signout_button" hidden={!accessToken && !expiresIn} onClick={handleSignoutClick} style={{ marginRight: '10px', padding: '10px 20px', fontSize: '16px' }}>Sign Out</button>
+        <button id='add_manual_event' hidden={!accessToken && !expiresIn} onClick={addManualEvent} style={{ marginRight: '10px', padding: '10px 20px', fontSize: '16px' }}>Add Event</button>
+      </div>
+  
+      <pre id="content" style={{ position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)', whiteSpace: 'pre-wrap', border: '1px solid #ccc', padding: '20px', borderRadius: '5px', backgroundColor: 'rgba(255, 255, 255, 0.8)', zIndex: 1 }}></pre>
     </div>
-  )
-}//This file has the authentication process
+  )  
+}  
