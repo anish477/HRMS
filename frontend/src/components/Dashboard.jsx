@@ -64,6 +64,17 @@ const Dashboard = () => {
                   <span className="ms-2 d-none d-sm-inline">Profile</span>
                 </Link>
               </li>
+              <li className="w-100">
+                <Link
+                  to="/dashboard/TrainingDevelopment"
+                  className="nav-link px-0 align-middle text-white"
+                >
+                  <i className="fs-4 bi-people ms-2"></i>
+                  <span className="ms-2 d-none d-sm-inline">
+                  Training and Development
+                  </span>
+                </Link>
+              </li>
               <li className="w-100" onClick={handleLogout}>
                 <Link
                   to="/login"

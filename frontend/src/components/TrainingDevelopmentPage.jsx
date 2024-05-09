@@ -1,7 +1,5 @@
-// src/components/TrainingDevelopmentPage.js
 import React, { useState } from 'react';
-// import Logo from './Logo';
-// import '../App.css';
+import './index.css';
 
 const TrainingDevelopmentPage = () => {
   const [courses] = useState([
@@ -16,6 +14,7 @@ const TrainingDevelopmentPage = () => {
 
   const handleLessonResponseChange = (e, courseId) => {
     const { value } = e.target;
+    console.log(`Changing response for Course ${courseId} to: ${value}`);
     setLessonResponses((prevResponses) => ({
       ...prevResponses,
       [courseId]: value,
@@ -24,46 +23,38 @@ const TrainingDevelopmentPage = () => {
 
   const handleLessonResponseSubmit = (courseId) => {
     const response = lessonResponses[courseId] || '';
-    console.log(`User response for Course ${courseId}: ${response}`);
+    console.log(`Submitting response for Course ${courseId}: ${response}`);
     setLessonResponses((prevResponses) => ({
       ...prevResponses,
       [courseId]: '',
     }));
   };
 
+  console.log('Rendered with courses:', courses);
+  console.log('Current lessonResponses:', lessonResponses);
+
   return (
     <div className="training-development-container">
+      {/* Header */}
       <header className="header">
-        <div className="logo-container">
-          {/* <Logo /> */}
-          <h1>Training and Development</h1>
-        </div>
+        <h1>Training Development</h1>
       </header>
-      <div className="main-content">
-        <nav className="navbar">
-          <ul>
-            <li>About Us</li>
-            <li>Learn More</li>
-            <li>Leave Management System</li>
-            <li>Training and Development</li>
-            <li>Log Out</li>
-          </ul>
-        </nav>
-        <div className="courses-container">
-          {courses.map((course) => (
-            <div key={course.id} className="course-item">
-              <h2>{course.title}</h2>
-              <p>{course.description}</p>
-              <textarea
-                placeholder="Write what you've learned from this lesson..."
-                value={lessonResponses[course.id] || ''}
-                onChange={(e) => handleLessonResponseChange(e, course.id)}
-                className="lesson-response-input"
-              ></textarea>
-              <button onClick={() => handleLessonResponseSubmit(course.id)}>Submit</button>
-            </div>
-          ))}
-        </div>
+
+      {/* Course content */}
+      <div className="courses-container">
+        {courses.map((course) => (
+          <div key={course.id} className="course-item">
+            <h2>{course.title}</h2>
+            <p>{course.description}</p>
+            <textarea
+              placeholder="Write what you've learned from this lesson..."
+              value={lessonResponses[course.id] || ''}
+              onChange={(e) => handleLessonResponseChange(e, course.id)}
+              className="lesson-response-input"
+            ></textarea>
+            <button onClick={() => handleLessonResponseSubmit(course.id)}>Submit</button>
+          </div>
+        ))}
       </div>
     </div>
   );

@@ -40,7 +40,7 @@ function App() {
               <Route path="employee" element={<Employee />} />
               <Route path="category" element={<Category />} />
               <Route path="profile" element={<Profile />} />
-              <Route path="add_category" element={<AddCategory />} />
+              <Route path="TrainingDevelopment" element={<TrainingDevelopmentPage />} />
               <Route path="add_employee" element={<AddEmployee />} />
             </Route>
           </Routes>
