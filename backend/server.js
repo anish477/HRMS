@@ -4,36 +4,35 @@ const express = require("express");
 const mongoose = require("mongoose");
 const workoutRoutes = require("./routes/workouts");
 const userRoutes = require("./routes/user");
-const categotyRoutes = require("./routes/category");
-const cors = require("cors");
+const categoryRoutes = require("./routes/category");
 const employeeRoutes = require("./routes/employee");
+const cors = require("cors");
 
-// express app
 const app = express();
 
-// middleware
+// Middleware
 app.use(express.json());
-
 app.use(cors());
 app.use((req, res, next) => {
   console.log(req.path, req.method);
   next();
 });
 
-// routes
+// Routes
 app.use("/api/workouts", workoutRoutes);
 app.use("/api/user", userRoutes);
-app.use("/api/category", categotyRoutes);
+app.use("/api/category", categoryRoutes);
 app.use("/api/employee", employeeRoutes);
-// connect to db
+
+// Connect to MongoDB
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
-    // listen for requests
+    // Start the server
     app.listen(process.env.PORT, () => {
-      console.log("connected to db & listening on port", process.env.PORT);
+      console.log("Connected to MongoDB & Listening on port", process.env.PORT);
     });
   })
   .catch((error) => {
-    console.log(error);
+    console.error("Error connecting to MongoDB:", error);
   });
