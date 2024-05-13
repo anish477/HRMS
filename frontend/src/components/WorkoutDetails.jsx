@@ -27,16 +27,16 @@ const WorkoutDetails = ({ workout }) => {
   };
 
   return (
-    <div className="workout-details">
-      <h4>{workout.title}</h4>
-      <p>
+    <div className="workout-details b-2 ml-5">
+      <h4 className="text-dark">{workout.title}</h4>
+      {/* <p>
         <strong>Target Days : </strong>
         {workout.load}
       </p>
       <p>
         <strong>Priority : </strong>
         {workout.reps}
-      </p>
+      </p> */}
       {/* <p>
         {formatDistanceToNow(new Date(workout.createdAt), { addSuffix: true })}
       </p> */}

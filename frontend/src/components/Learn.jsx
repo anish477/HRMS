@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 const Employee = () => {
   const { user } = useAuthContext();
   const [employees, setEmployee] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   // const handleClick = async (employeeId) => {
   //   if (!user) {
@@ -23,6 +24,16 @@ const Employee = () => {
   //     setEmployee(employees.filter((employee) => employee._id !== employeeId));
   //   }
   // };
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filteredEmployees = employees?.filter((employee) =>
+    Object.values(employee)
+      .join(" ")
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
+  );
 
   useEffect(() => {
     const fetchEmployee = async () => {
@@ -51,6 +62,14 @@ const Employee = () => {
         <div className="px-5 mt-3 d-flex justify-content-center">
           <h4>Program List</h4>
         </div>
+        <div className="px-5 mt-3 d-flex justify-content-center">
+          <input
+            type="text"
+            placeholder="Search"
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
+        </div>
         <div className=" mt-3 px-5">
           <table className="table">
             <thead>
@@ -67,16 +86,13 @@ const Employee = () => {
             </thead>
 
             <tbody>
-              {employees &&
-                employees.map((employee) => (
+              {filteredEmployees &&
+                filteredEmployees.map((employee) => (
                   <tr key={employee._id}>
                     <td>{employee.name}</td>
-
                     <td>{employee.email}</td>
-
                     <td>{employee.trainone}</td>
                     <td>{employee.traintwo}</td>
-
                     <td>
                       <Link
                         to={`/dashboard/edit_traning/${employee._id}`}

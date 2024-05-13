@@ -6,7 +6,7 @@ import { useAuthContext } from "../hooks/useAuthContext";
 const CategoryDetails = () => {
   const { user } = useAuthContext();
   const [categories, setCategory] = useState(null);
-
+  const [searchTerm, setSearchTerm] = useState("");
   const handleClick = async (categoryId) => {
     if (!user) {
       return;
@@ -44,11 +44,31 @@ const CategoryDetails = () => {
 
     fetchCategory();
   }, [user]);
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filteredCategories = categories?.filter((category) =>
+    category.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div>
       <div className="px-5 mt-3 d-flex justify-content-center">
         <h4>Category List</h4>
+      </div>
+      <div className="px-5 mt-3 d-flex justify-content-center">
+        <input
+          type="text"
+          placeholder="Search"
+          value={searchTerm}
+          onChange={handleSearchChange}
+        />
+      </div>
+      <div className="d-flex justify-content-center mb-3">
+        <Link to="/dashboard/add_category" className="btn btn-success">
+          Add Category
+        </Link>
       </div>
       <div className=" px-5 d-flex justify-content-center">
         <table className="table">
@@ -59,8 +79,8 @@ const CategoryDetails = () => {
             </tr>
           </thead>
           <tbody>
-            {categories &&
-              categories.map((category) => (
+            {filteredCategories &&
+              filteredCategories.map((category) => (
                 <tr key={category._id}>
                   <td>{category.name}</td>
                   <td>
@@ -76,11 +96,6 @@ const CategoryDetails = () => {
           </tbody>
         </table>
         {categories && categories.length === 0 && <p>No categories found</p>}
-      </div>
-      <div className="d-flex justify-content-center">
-        <Link to="/dashboard/add_category" className="btn btn-success">
-          Add Category
-        </Link>
       </div>
     </div>
   );

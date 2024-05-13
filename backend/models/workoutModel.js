@@ -6,15 +6,15 @@ const workoutSchema = new Schema(
   {
     title: {
       type: String,
-      required: true,
+      // required: true,
     },
     reps: {
       type: Number,
-      required: true,
+      // required: true,
     },
     load: {
       type: Number,
-      required: true,
+      // required: true,
     },
     user_id: {
       type: String,

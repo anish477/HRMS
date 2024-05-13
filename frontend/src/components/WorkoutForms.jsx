@@ -58,7 +58,7 @@ const WorkoutForm = () => {
         className={emptyFields.includes("title") ? "error" : ""}
       />
 
-      <label>To Be Done In:(Days)</label>
+      {/* <label>To Be Done In:(Days)</label>
       <input
         type="number"
         onChange={(e) => setLoad(e.target.value)}
@@ -72,7 +72,7 @@ const WorkoutForm = () => {
         onChange={(e) => setReps(e.target.value)}
         value={reps}
         className={emptyFields.includes("reps") ? "error" : ""}
-      />
+      /> */}
 
       <button>Add </button>
       {error && <div className="error">{error}</div>}

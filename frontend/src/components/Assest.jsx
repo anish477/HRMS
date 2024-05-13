@@ -7,6 +7,8 @@ const Employee = () => {
   const { user } = useAuthContext();
   const [employees, setEmployee] = useState(null);
 
+  const [searchTerm, setSearchTerm] = useState("");
+
   // const handleClick = async (employeeId) => {
   //   if (!user) {
   //     return;
@@ -44,12 +46,30 @@ const Employee = () => {
 
     fetchEmployee();
   }, [user]);
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filteredEmployees = employees?.filter((employee) =>
+    Object.values(employee)
+      .join(" ")
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div>
       <div className="">
         <div className="px-5 mt-3 d-flex justify-content-center">
           <h4>Asset List</h4>
+        </div>
+        <div className="px-5 mt-3 d-flex justify-content-center">
+          <input
+            type="text"
+            placeholder="Search"
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
         </div>
         <div className=" mt-3 px-5">
           <table className="table">
@@ -66,16 +86,13 @@ const Employee = () => {
             </thead>
 
             <tbody>
-              {employees &&
-                employees.map((employee) => (
+              {filteredEmployees &&
+                filteredEmployees.map((employee) => (
                   <tr key={employee._id}>
                     <td>{employee.name}</td>
-
                     <td>{employee.email}</td>
-
                     <td>{employee.assetone}</td>
                     <td>{employee.assettwo}</td>
-
                     <td>
                       <Link
                         to={`/dashboard/edit_asset/${employee._id}`}
@@ -83,13 +100,6 @@ const Employee = () => {
                       >
                         Edit
                       </Link>
-
-                      {/* <button
-                        className="btn btn-danger"
-                        onClick={() => handleClick(employee._id)}
-                      >
-                        Delete
-                      </button> */}
                     </td>
                   </tr>
                 ))}

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 const EditLeavemain = () => {
   const { user } = useAuthContext();
   const [employees, setEmployee] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleClick = async (employeeId) => {
     if (!user) {
@@ -44,12 +45,30 @@ const EditLeavemain = () => {
 
     fetchEmployee();
   }, [user]);
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filteredEmployees = employees?.filter((employee) =>
+    Object.values(employee)
+      .join(" ")
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div>
       <div className="">
         <div className="px-5 mt-3 d-flex justify-content-center">
           <h4>Employee List</h4>
+        </div>
+        <div className="px-5 mt-3 d-flex justify-content-center">
+          <input
+            type="text"
+            placeholder="Search"
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
         </div>
         <div className=" mt-3 px-5">
           <table className="table">
@@ -68,8 +87,8 @@ const EditLeavemain = () => {
             </thead>
 
             <tbody>
-              {employees &&
-                employees
+              {filteredEmployees &&
+                filteredEmployees
                   .filter((employee) => employee.assetthree !== "On Leave")
                   .map((employee) => (
                     <tr key={employee._id}>

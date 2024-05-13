@@ -6,23 +6,24 @@ import { useEffect, useState } from "react";
 const LeaveManagement = () => {
   const { user } = useAuthContext();
   const [employees, setEmployee] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const handleClick = async (employeeId) => {
-    if (!user) {
-      return;
-    }
+  // const handleClick = async (employeeId) => {
+  //   if (!user) {
+  //     return;
+  //   }
 
-    const response = await fetch("/api/employee/" + employeeId, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${user.token}`,
-      },
-    });
+  //   const response = await fetch("/api/employee/" + employeeId, {
+  //     method: "DELETE",
+  //     headers: {
+  //       Authorization: `Bearer ${user.token}`,
+  //     },
+  //   });
 
-    if (response.ok) {
-      setEmployee(employees.filter((employee) => employee._id !== employeeId));
-    }
-  };
+  //   if (response.ok) {
+  //     setEmployee(employees.filter((employee) => employee._id !== employeeId));
+  //   }
+  // };
 
   useEffect(() => {
     const fetchEmployee = async () => {
@@ -44,12 +45,35 @@ const LeaveManagement = () => {
 
     fetchEmployee();
   }, [user]);
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filteredEmployees = employees?.filter((employee) =>
+    Object.values(employee)
+      .join(" ")
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div>
       <div className="">
         <div className="px-5 mt-3 d-flex justify-content-center">
           <h4>On leave Employee List</h4>
+        </div>
+        <div className="px-5 mt-3 d-flex justify-content-center">
+          <input
+            type="text"
+            placeholder="Search"
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
+        </div>
+        <div className="d-flex justify-content-center ">
+          <Link to="/dashboard/editleavemain" className="btn btn-success">
+            Add on Leave
+          </Link>
         </div>
         <div className=" mt-3 px-5">
           <table className="table">
@@ -68,8 +92,8 @@ const LeaveManagement = () => {
             </thead>
 
             <tbody>
-              {employees &&
-                employees
+              {filteredEmployees &&
+                filteredEmployees
                   .filter((employee) => employee.assetthree === "On Leave")
                   .map((employee) => (
                     <tr key={employee._id}>
@@ -91,12 +115,6 @@ const LeaveManagement = () => {
             </tbody>
           </table>
         </div>
-      </div>
-
-      <div className="d-flex justify-content-center mt-5">
-        <Link to="/dashboard/editleavemain" className="btn btn-success">
-          Add on Leave
-        </Link>
       </div>
     </div>
   );
