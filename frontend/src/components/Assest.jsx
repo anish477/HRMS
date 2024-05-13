@@ -7,22 +7,22 @@ const Employee = () => {
   const { user } = useAuthContext();
   const [employees, setEmployee] = useState(null);
 
-  const handleClick = async (employeeId) => {
-    if (!user) {
-      return;
-    }
+  // const handleClick = async (employeeId) => {
+  //   if (!user) {
+  //     return;
+  //   }
 
-    const response = await fetch("/api/employee/" + employeeId, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${user.token}`,
-      },
-    });
+  //   const response = await fetch("/api/employee/" + employeeId, {
+  //     method: "DELETE",
+  //     headers: {
+  //       Authorization: `Bearer ${user.token}`,
+  //     },
+  //   });
 
-    if (response.ok) {
-      setEmployee(employees.filter((employee) => employee._id !== employeeId));
-    }
-  };
+  //   if (response.ok) {
+  //     setEmployee(employees.filter((employee) => employee._id !== employeeId));
+  //   }
+  // };
 
   useEffect(() => {
     const fetchEmployee = async () => {

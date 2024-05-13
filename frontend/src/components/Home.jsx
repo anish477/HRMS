@@ -7,6 +7,7 @@ const Home = () => {
   const [employeeTotal, setEmployeeTotal] = useState(0);
   const [salaryTotal, setSalaryTotal] = useState(0);
   const [totalLeave, setLeaveTotal] = useState(0);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchEmployee = async () => {
@@ -41,6 +42,16 @@ const Home = () => {
 
     fetchEmployee();
   }, [user]);
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filteredEmployees = employees?.filter((employee) =>
+    Object.values(employee)
+      .join(" ")
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div>
@@ -80,6 +91,14 @@ const Home = () => {
       <div className="px-5 mt-3 d-flex justify-content-center ">
         <h4>Employee List</h4>
       </div>
+      <div className="px-5 mt-3 d-flex justify-content-center">
+        <input
+          type="text"
+          placeholder="Search"
+          value={searchTerm}
+          onChange={handleSearchChange}
+        />
+      </div>
       <div className=" mt-3 px-5">
         <table className="table">
           <thead>
@@ -95,11 +114,10 @@ const Home = () => {
           </thead>
 
           <tbody>
-            {employees &&
-              employees.map((employee) => (
+            {filteredEmployees &&
+              filteredEmployees.map((employee) => (
                 <tr key={employee._id}>
                   <td>{employee.name}</td>
-
                   <td>{employee.category}</td>
                   <td>$ {employee.salary}</td>
                   <td>{employee.address}</td>
